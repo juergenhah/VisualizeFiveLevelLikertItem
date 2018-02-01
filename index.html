@@ -2,452 +2,50 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Minimal D3 Example</title>
+        <title>Minimal surveyVisualizing Example</title>
         <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-        
-        <style>
-        </style>
+        <script src="js/surveyVisualizing.js"></script>
     </head>
     <body onload="">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="0 0 100 130"></svg>
+
+        <h1>This is a minimal example how to use surveyVisualizing.js </h1>
+        The visualization is based on following requirements:
+        <ul>
+            <li>The chart has to be included in a web page where the size of the chart can be changed easily.</li>
+            <li>The chart has to include the distribution of all answers.</li>
+            <li>The chart has to show how many answers are given per option and in total.</li>
+            <li>The chart has to highlight the most answered option.</li>
+        </ul>
+        In order to meet the requirements following decissions are made:
+
+        <ul>
+            <li>To include it in a webpage the JavaScript library d3js is used. To make the char size independent d3js generates SVG charts.</li>
+            <li>Each answer is respected by one rectangle.</li>
+            <li>To count all given answers the amount of rectangles included in the chart can be counted.</li>
+            <li>The most answered option is given by another color.</li>
+        </ul>
+
+        <h1>Two examples are given below</h1>  
+
+        <h3> Question 1:
+        <svg id ="q1"  xmlns="http://www.w3.org/2000/svg" version="1.1" width="200px" height="200px" viewBox="0 0 100 130"></svg>
+        </h3>
+
+        <h3> Question 2:
+            <svg id ="q2"  xmlns="http://www.w3.org/2000/svg" version="1.1" width="400px" height="400px" viewBox="0 0 100 130"></svg>
+        </h3>
+
         <script type="text/javascript">
-         var svg = d3.select('svg');
 
-         var trifftzu = [{
-             x1: 10,
-             x2: 20,
-             y1: 10,
-             y2: 20
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 21,
-             y2: 31
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 32,
-             y2: 42
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 43,
-             y2: 53
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 54,
-             y2: 64
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 65,
-             y2: 75
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 76,
-             y2: 86
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 87,
-             y2: 97
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 98,
-             y2: 108
-         }, {
-             x1: 10,
-             x2: 20,
-             y1: 109,
-             y2: 119
-         }];
-
-         var trifftEherZu = [{
-             x1: 21,
-             x2: 31,
-             y1: 10,
-             y2: 20
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 21,
-             y2: 31
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 32,
-             y2: 42
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 43,
-             y2: 53
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 54,
-             y2: 64
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 65,
-             y2: 75
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 76,
-             y2: 86
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 87,
-             y2: 97
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 98,
-             y2: 108
-         }, {
-             x1: 21,
-             x2: 31,
-             y1: 109,
-             y2: 119
-         }];
+         var rectangleColorMaxAnswerdOption = "#ffed00"; // the color of the rectangles for the most answered option
+         var rectangleColorOtherOptions = "#87888a"; // the color of the rectangles for all other options
 
 
+         var answersQ1 = [0,0,4,4,3]; // there are five possible options how a question can be answered. The amount of given answers is respected by the numbers, for example option 1 is answered zero times, option 2 is answered zero times too. The amount ranges from zero to ten.  
+         visualizeAnswers(d3.select('#q1'), answersQ1,rectangleColorMaxAnswerdOption,rectangleColorOtherOptions);
 
-         var teilsTeils = [{
-             x1: 32,
-             x2: 42,
-             y1: 10,
-             y2: 20
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 21,
-             y2: 31
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 32,
-             y2: 42
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 43,
-             y2: 53
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 54,
-             y2: 64
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 65,
-             y2: 75
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 76,
-             y2: 86
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 87,
-             y2: 97
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 98,
-             y2: 108
-         }, {
-             x1: 32,
-             x2: 42,
-             y1: 109,
-             y2: 119
-         }];
-
-
-         var trifftEherNichtZu = [{
-             x1: 43,
-             x2: 53,
-             y1: 10,
-             y2: 20
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 21,
-             y2: 31
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 32,
-             y2: 42
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 43,
-             y2: 53
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 54,
-             y2: 64
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 65,
-             y2: 75
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 76,
-             y2: 86
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 87,
-             y2: 97
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 98,
-             y2: 108
-         }, {
-             x1: 43,
-             x2: 53,
-             y1: 109,
-             y2: 119
-         }];
-
-
-
-         var trifftNichtZu = [{
-             x1: 54,
-             x2: 64,
-             y1: 10,
-             y2: 20
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 21,
-             y2: 31
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 32,
-             y2: 42
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 43,
-             y2: 53
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 54,
-             y2: 64
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 65,
-             y2: 75
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 76,
-             y2: 86
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 87,
-             y2: 97
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 98,
-             y2: 108
-         }, {
-             x1: 54,
-             x2: 64,
-             y1: 109,
-             y2: 119
-         }];
-
-// Questionary results
-         var q1 = [1,2,10,0,10];
-
-         var rectangleColorMaxAnswers = "#ffed00";
-         var rectangleColorOtherAnswers = "#87888a";
-
-         var maxAnswers = Math.max.apply(null, q1);
-         console.log(maxAnswers);
-
-         for (var i = 0; i < q1.length; i++) {
-             var a = q1[i];
-console.log(a + "   " + i);
-             if (i == 0) {
-                 if (a == 0) {
-                     svg.append("line")
-                        .attr("x1", "10")
-                        .attr("y1", "119")
-                        .attr("x2", "20")
-                        .attr("y2", "119")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke", "black");
-                 } else {
-                     var trifftzu1 = trifftzu.slice(10 - a, 10); // reduct the amount of recs
-                     var trifftZurects = svg.selectAll("foo")
-                                            .data(trifftzu1) //here how many to select?
-                                            .enter()
-                                            .append("rect")
-                                            .attr("x", d => d.x1)
-                                            .attr("y", d => d.y1)
-                                            .attr("width", d => d.x2 - d.x1)
-                                            .attr("height", d => d.y2 - d.y1)
-                                            .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                            .attr("opacity", 1);
-                 }
-             } else if (i == 1) {
-                 if (a == 0) {
-                     svg.append("line")
-                        .attr("x1", "21")
-                        .attr("y1", "119")
-                        .attr("x2", "31")
-                        .attr("y2", "119")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke", "black");
-                 } else {
-                     var trifftEherZu1 = trifftEherZu.slice(10 - a, 10); // reduct the amount of recs
-                     var trifftEherZurects = svg.selectAll("foo")
-                                                .data(trifftEherZu1)
-                                                .enter()
-                                                .append("rect")
-                                                .attr("x", d => d.x1)
-                                                .attr("y", d => d.y1)
-                                                .attr("width", d => d.x2 - d.x1)
-                                                .attr("height", d => d.y2 - d.y1)
-                                                .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                .attr("opacity", 1);
-                 }
-
-             } else if (i == 2) {
-                 if (a == 0) {
-                     svg.append("line")
-                        .attr("x1", "32")
-                        .attr("y1", "119")
-                        .attr("x2", "42")
-                        .attr("y2", "119")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke", "black");
-                 } else {
-                     var teilsTeils1 = teilsTeils.slice(10 - a, 10); // reduct the amount of recs
-                     var teilsTeilsRects = svg.selectAll("foo")
-                                              .data(teilsTeils1)
-                                              .enter()
-                                              .append("rect")
-                                              .attr("x", d => d.x1)
-                                              .attr("y", d => d.y1)
-                                              .attr("width", d => d.x2 - d.x1)
-                                              .attr("height", d => d.y2 - d.y1)
-                                              .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                              .attr("opacity", 1);
-                 }
-             } else if (i == 3) {
-                 if (a == 0) {
-                     svg.append("line")
-                        .attr("x1", "43")
-                        .attr("y1", "119")
-                        .attr("x2", "53")
-                        .attr("y2", "119")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke", "black");
-                 } else {
-                     var trifftEherNichtZu1 = trifftEherNichtZu.slice(10 - a, 10); // reduct the amount of recs
-                     var trifftEherNichtZuRects = svg.selectAll("foo")
-                                                     .data(trifftEherNichtZu1)
-                                                     .enter()
-                                                     .append("rect")
-                                                     .attr("x", d => d.x1)
-                                                     .attr("y", d => d.y1)
-                                                     .attr("width", d => d.x2 - d.x1)
-                                                     .attr("height", d => d.y2 - d.y1)
-                                                     .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                     .attr("opacity", 1);
-                 }
-             } else {
-                 if (a == 0) {
-
-                     svg.append("line")
-                        .attr("x1", "54")
-                        .attr("y1", "119")
-                        .attr("x2", "64")
-                        .attr("y2", "119")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke", "black");
-                 } else {
-                     var trifftNichtZu1 = trifftNichtZu.slice(10-a, 10); // reduct the amount of recs
-                     var trifftNichtZuRects = svg.selectAll("foo")
-                                                 .data(trifftNichtZu1)
-                                                 .enter()
-                                                 .append("rect")
-                                                 .attr("x", d => d.x1)
-                                                 .attr("y", d => d.y1)
-                                                 .attr("width", d => d.x2 - d.x1)
-                                                 .attr("height", d => d.y2 - d.y1)
-                                                 .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                 .attr("opacity", 1);
-                 }
-             }
-         }
-
-
-
-
-   
-
-   
-
-
-         svg.append("text")
-            .attr("x", "12")
-            .attr("y", "125")
-            .attr("text-anchor", "left")
-            .style("font-size", "5px")
-            .text("++");
-
-         svg.append("text")
-            .attr("x", "25")
-            .attr("y", "125")
-            .attr("text-anchor", "left")
-            .style("font-size", "5px")
-            .text("+");
-
-         svg.append("text")
-            .attr("x", "35")
-            .attr("y", "125")
-            .attr("text-anchor", "left")
-            .style("font-size", "5px")
-            .text("~");
-
-         svg.append("text")
-            .attr("x", "48")
-            .attr("y", "125")
-            .attr("text-anchor", "left")
-            .style("font-size", "5px")
-            .text("-");
-
-         svg.append("text")
-            .attr("x", "58")
-            .attr("y", "125")
-            .attr("text-anchor", "left")
-            .style("font-size", "5px")
-            .text("--");
-     
+         var answersQ2 = [7,1,2,1,0];
+         visualizeAnswers(d3.select('#q2'), answersQ2,rectangleColorMaxAnswerdOption,rectangleColorOtherOptions);
         </script>	
     </body>
 </html>
