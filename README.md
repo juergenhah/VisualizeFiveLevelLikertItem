@@ -14,7 +14,7 @@ In order to meet the requirements following decissions are made:
 - The most answered option is given by another color.
 
 The range of answers per option is from zero to ten. The options are labeled by:
-* Strongly agree = ++<
+* Strongly agree = ++
 * Agree = + 
 * Neither agree nor disagree = ~
 * Disagree = -
