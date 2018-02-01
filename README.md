@@ -1,4 +1,4 @@
-# VisualizeFiveLevelLikertItem
+# Visualize a Five-Level Likert Item
 JavaScript library to generate SVG charts for a <a href="https://en.wikipedia.org/wiki/Likert_scale"> five-level Likert item</a>.
 
 The implementation is based on following requirements:
