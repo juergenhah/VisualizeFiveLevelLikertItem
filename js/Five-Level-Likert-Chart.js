@@ -1,5 +1,5 @@
-
-         var trifftzu = [{
+// pre defined position for rectangles for all options, max 10 per option
+var stronglyAgree = [{
              x1: 10,
              x2: 20,
              y1: 10,
@@ -51,7 +51,7 @@
              y2: 119
          }];
 
-         var trifftEherZu = [{
+         var agree = [{
              x1: 21,
              x2: 31,
              y1: 10,
@@ -105,7 +105,7 @@
 
 
 
-         var teilsTeils = [{
+         var neitherAgreeNorDisagree = [{
              x1: 32,
              x2: 42,
              y1: 10,
@@ -158,7 +158,7 @@
          }];
 
 
-         var trifftEherNichtZu = [{
+         var disagree = [{
              x1: 43,
              x2: 53,
              y1: 10,
@@ -212,7 +212,7 @@
 
 
 
-         var trifftNichtZu = [{
+         var stronglyDisagree = [{
              x1: 54,
              x2: 64,
              y1: 10,
@@ -264,164 +264,160 @@
              y2: 119
          }];
 
+//** svg represents the DOM element where the chart is appended  **/
+function visualizeAnswers(svg, answersForQuestion, rectangleColorMaxAnswers, rectangleColorOtherAnswers){
+//    console.log( answersForQuestion, rectangleColorMaxAnswers, rectangleColorOtherAnswers);
 
+    var maxAnswers = Math.max.apply(null, answersForQuestion);
+    for (var i = 0; i < answersForQuestion.length; i++) {
+        var amountOfAnswers = answersForQuestion[i];
+        console.log(amountOfAnswers + "   " + i);
 
-function visualizeAnswers(svg, amountOfAnswers, rectangleColorMaxAnswers, rectangleColorOtherAnswers){
-    console.log( amountOfAnswers, rectangleColorMaxAnswers, rectangleColorOtherAnswers);
+        if (i == 0) { // strongly agree option
 
-             var maxAnswers = Math.max.apply(null, amountOfAnswers);
-             for (var i = 0; i < amountOfAnswers.length; i++) {
-                 var a = amountOfAnswers[i];
-                 console.log(a + "   " + i);
+            if (amountOfAnswers == 0) { // no answers given for this option
+                svg.append("line")
+                    .attr("x1", "10")
+                    .attr("y1", "119")
+                    .attr("x2", "20")
+                    .attr("y2", "119")
+                    .attr("stroke-width", "2px")
+                    .attr("stroke", "black");
+            } else {
+                var stronglyAgreerects = svg.selectAll("foo")
+                    .data(stronglyAgree.slice(10 - amountOfAnswers, 10)) // select the amount of rectangles to draw
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => d.x1)
+                    .attr("y", d => d.y1)
+                    .attr("width", d => d.x2 - d.x1)
+                    .attr("height", d => d.y2 - d.y1)
+                    .attr("fill", amountOfAnswers == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers) // which color should the rectangles have
+                    .attr("opacity", 1);
+            }
 
-                 if (i == 0) {
-                     if (a == 0) {
-                         svg.append("line")
-                            .attr("x1", "10")
-                            .attr("y1", "119")
-                            .attr("x2", "20")
-                            .attr("y2", "119")
-                            .attr("stroke-width", "2px")
-                            .attr("stroke", "black");
-                     } else {
-                         var trifftzu1 = trifftzu.slice(10 - a, 10); // reduct the amount of recs
-                         var trifftZurects = svg.selectAll("foo")
-                                                .data(trifftzu1) //here how many to select?
-                                                .enter()
-                                                .append("rect")
-                                                .attr("x", d => d.x1)
-                                                .attr("y", d => d.y1)
-                                                .attr("width", d => d.x2 - d.x1)
-                                                .attr("height", d => d.y2 - d.y1)
-                                                .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                .attr("opacity", 1);
-                     }
-                 } else if (i == 1) {
-                     if (a == 0) {
-                         svg.append("line")
-                            .attr("x1", "21")
-                            .attr("y1", "119")
-                            .attr("x2", "31")
-                            .attr("y2", "119")
-                            .attr("stroke-width", "2px")
-                            .attr("stroke", "black");
-                     } else {
-                         var trifftEherZu1 = trifftEherZu.slice(10 - a, 10); // reduct the amount of recs
-                         var trifftEherZurects = svg.selectAll("foo")
-                                                    .data(trifftEherZu1)
-                                                    .enter()
-                                                    .append("rect")
-                                                    .attr("x", d => d.x1)
-                                                    .attr("y", d => d.y1)
-                                                    .attr("width", d => d.x2 - d.x1)
-                                                    .attr("height", d => d.y2 - d.y1)
-                                                    .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                    .attr("opacity", 1);
-                     }
+        } else if (i == 1) {// agree option
+            if (amountOfAnswers == 0) {
+                svg.append("line")
+                    .attr("x1", "21")
+                    .attr("y1", "119")
+                    .attr("x2", "31")
+                    .attr("y2", "119")
+                    .attr("stroke-width", "2px")
+                    .attr("stroke", "black");
+            } else {
+                var agreerects = svg.selectAll("foo")
+                    .data(agree.slice(10 - amountOfAnswers, 10))
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => d.x1)
+                    .attr("y", d => d.y1)
+                    .attr("width", d => d.x2 - d.x1)
+                    .attr("height", d => d.y2 - d.y1)
+                    .attr("fill", amountOfAnswers == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
+                    .attr("opacity", 1);
+            }
 
-                 } else if (i == 2) {
-                     if (a == 0) {
-                         svg.append("line")
-                            .attr("x1", "32")
-                            .attr("y1", "119")
-                            .attr("x2", "42")
-                            .attr("y2", "119")
-                            .attr("stroke-width", "2px")
-                            .attr("stroke", "black");
-                     } else {
-                         var teilsTeils1 = teilsTeils.slice(10 - a, 10); // reduct the amount of recs
-                         var teilsTeilsRects = svg.selectAll("foo")
-                                                  .data(teilsTeils1)
-                                                  .enter()
-                                                  .append("rect")
-                                                  .attr("x", d => d.x1)
-                                                  .attr("y", d => d.y1)
-                                                  .attr("width", d => d.x2 - d.x1)
-                                                  .attr("height", d => d.y2 - d.y1)
-                                                  .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                  .attr("opacity", 1);
-                     }
-                 } else if (i == 3) {
-                     if (a == 0) {
-                         svg.append("line")
-                            .attr("x1", "43")
-                            .attr("y1", "119")
-                            .attr("x2", "53")
-                            .attr("y2", "119")
-                            .attr("stroke-width", "2px")
-                            .attr("stroke", "black");
-                     } else {
-                         var trifftEherNichtZu1 = trifftEherNichtZu.slice(10 - a, 10); // reduct the amount of recs
-                         var trifftEherNichtZuRects = svg.selectAll("foo")
-                                                         .data(trifftEherNichtZu1)
-                                                         .enter()
-                                                         .append("rect")
-                                                         .attr("x", d => d.x1)
-                                                         .attr("y", d => d.y1)
-                                                         .attr("width", d => d.x2 - d.x1)
-                                                         .attr("height", d => d.y2 - d.y1)
-                                                         .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                         .attr("opacity", 1);
-                     }
-                 } else {
-                     if (a == 0) {
+        } else if (i == 2) { // neither agree nor disagree option
+            if (amountOfAnswers == 0) {
+                svg.append("line")
+                    .attr("x1", "32")
+                    .attr("y1", "119")
+                    .attr("x2", "42")
+                    .attr("y2", "119")
+                    .attr("stroke-width", "2px")
+                    .attr("stroke", "black");
+            } else {
+                var neitherAgreeNorDisagreeRects = svg.selectAll("foo")
+                    .data(neitherAgreeNorDisagree.slice(10 - amountOfAnswers, 10))
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => d.x1)
+                    .attr("y", d => d.y1)
+                    .attr("width", d => d.x2 - d.x1)
+                    .attr("height", d => d.y2 - d.y1)
+                    .attr("fill", amountOfAnswers == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
+                    .attr("opacity", 1);
+            }
+        } else if (i == 3) { // disagree option
+            if (amountOfAnswers == 0) {
+                svg.append("line")
+                    .attr("x1", "43")
+                    .attr("y1", "119")
+                    .attr("x2", "53")
+                    .attr("y2", "119")
+                    .attr("stroke-width", "2px")
+                    .attr("stroke", "black");
+            } else {
+                var disagreeRects = svg.selectAll("foo")
+                    .data(disagree.slice(10 - amountOfAnswers, 10))
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => d.x1)
+                    .attr("y", d => d.y1)
+                    .attr("width", d => d.x2 - d.x1)
+                    .attr("height", d => d.y2 - d.y1)
+                    .attr("fill", amountOfAnswers == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
+                    .attr("opacity", 1);
+            }
 
-                         svg.append("line")
-                            .attr("x1", "54")
-                            .attr("y1", "119")
-                            .attr("x2", "64")
-                            .attr("y2", "119")
-                            .attr("stroke-width", "2px")
-                            .attr("stroke", "black");
-                     } else {
-                         var trifftNichtZu1 = trifftNichtZu.slice(10-a, 10); // reduct the amount of recs
-                         var trifftNichtZuRects = svg.selectAll("foo")
-                                                     .data(trifftNichtZu1)
-                                                     .enter()
-                                                     .append("rect")
-                                                     .attr("x", d => d.x1)
-                                                     .attr("y", d => d.y1)
-                                                     .attr("width", d => d.x2 - d.x1)
-                                                     .attr("height", d => d.y2 - d.y1)
-                                                     .attr("fill", a == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
-                                                     .attr("opacity", 1);
-                     }
-                 }
-             }
+        } else { // strongly disagree option
 
-             svg.append("text")
-                .attr("x", "12")
-                .attr("y", "125")
-                .attr("text-anchor", "left")
-                .style("font-size", "5px")
-                .text("++");
+            if (amountOfAnswers == 0) {
+                svg.append("line")
+                    .attr("x1", "54")
+                    .attr("y1", "119")
+                    .attr("x2", "64")
+                    .attr("y2", "119")
+                    .attr("stroke-width", "2px")
+                    .attr("stroke", "black");
+            } else {
+                var stronglyDisagreeRects = svg.selectAll("foo")
+                    .data(stronglyDisagree.slice(10-amountOfAnswers, 10))
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => d.x1)
+                    .attr("y", d => d.y1)
+                    .attr("width", d => d.x2 - d.x1)
+                    .attr("height", d => d.y2 - d.y1)
+                    .attr("fill", amountOfAnswers == maxAnswers ? rectangleColorMaxAnswers : rectangleColorOtherAnswers)
+                    .attr("opacity", 1);
+            }
+        }
+    }
+    // label the options with ++, +, ~, - and --
+    svg.append("text")
+        .attr("x", "12")
+        .attr("y", "125")
+        .attr("text-anchor", "left")
+        .style("font-size", "5px")
+        .text("++");
 
-             svg.append("text")
-                .attr("x", "25")
-                .attr("y", "125")
-                .attr("text-anchor", "left")
-                .style("font-size", "5px")
-                .text("+");
+    svg.append("text")
+        .attr("x", "25")
+        .attr("y", "125")
+        .attr("text-anchor", "left")
+        .style("font-size", "5px")
+        .text("+");
 
-             svg.append("text")
-                .attr("x", "35")
-                .attr("y", "125")
-                .attr("text-anchor", "left")
-                .style("font-size", "5px")
-                .text("~");
+    svg.append("text")
+        .attr("x", "35")
+        .attr("y", "125")
+        .attr("text-anchor", "left")
+        .style("font-size", "5px")
+        .text("~");
 
-             svg.append("text")
-                .attr("x", "48")
-                .attr("y", "125")
-                .attr("text-anchor", "left")
-                .style("font-size", "5px")
-                .text("-");
+    svg.append("text")
+        .attr("x", "48")
+        .attr("y", "125")
+        .attr("text-anchor", "left")
+        .style("font-size", "5px")
+        .text("-");
 
-             svg.append("text")
-                .attr("x", "58")
-                .attr("y", "125")
-                .attr("text-anchor", "left")
-                .style("font-size", "5px")
-                .text("--");
-             
-         }
+    svg.append("text")
+        .attr("x", "58")
+        .attr("y", "125")
+        .attr("text-anchor", "left")
+        .style("font-size", "5px")
+        .text("--");
+}

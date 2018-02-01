@@ -4,12 +4,14 @@
         <meta charset="utf-8">
         <title>Minimal surveyVisualizing Example</title>
         <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-        <script src="js/surveyVisualizing.js"></script>
+        <script src="js/Five-Level-Likert-Chart.js"></script>
     </head>
     <body onload="">
 
         <h1>This is a minimal example how to use surveyVisualizing.js </h1>
-        The visualization is based on following requirements:
+        The idea of the library is to visualize a <a href="https://en.wikipedia.org/wiki/Likert_scale"> five-level Likert item </a>
+
+        The implementation is based on following requirements:
         <ul>
             <li>The chart has to be included in a web page where the size of the chart can be changed easily.</li>
             <li>The chart has to include the distribution of all answers.</li>
@@ -24,12 +26,21 @@
             <li>To count all given answers the amount of rectangles included in the chart can be counted.</li>
             <li>The most answered option is given by another color.</li>
         </ul>
+        The range of answers per option is from zero to ten. The options are labeled by:
+        <ul>
+            <li>Strongly agree = ++</li>
+            <li>Agree = + </li>
+            <li>Neither agree nor disagree = ~</li>
+            <li>Disagree = -</li>
+            <li>Strongly disagree = -- </li>
+        </ul>
 
         <h1>Two examples are given below</h1>  
 
         <h3> Question 1:
         <svg id ="q1"  xmlns="http://www.w3.org/2000/svg" version="1.1" width="200px" height="200px" viewBox="0 0 100 130"></svg>
         </h3>
+        The amount of answers per option are included in JavaScript code.
 
         <h3> Question 2:
             <svg id ="q2"  xmlns="http://www.w3.org/2000/svg" version="1.1" width="400px" height="400px" viewBox="0 0 100 130"></svg>
@@ -41,7 +52,7 @@
          var rectangleColorOtherOptions = "#87888a"; // the color of the rectangles for all other options
 
 
-         var answersQ1 = [0,0,4,4,3]; // there are five possible options how a question can be answered. The amount of given answers is respected by the numbers, for example option 1 is answered zero times, option 2 is answered zero times too. The amount ranges from zero to ten.  
+         var answersQ1 = [0,0,4,4,3]; // Each element of the array corresponds to one of the five-level Likert item. The amount of given answers is respected by the numbers, for example option "strong agree" is answered zero times, "agree" is answered zero times too. 
          visualizeAnswers(d3.select('#q1'), answersQ1,rectangleColorMaxAnswerdOption,rectangleColorOtherOptions);
 
          var answersQ2 = [7,1,2,1,0];
